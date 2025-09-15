@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System.Data;
+
 namespace CPUWindowsFormsFramework
 {
     public class WindowsFormsUtility
@@ -12,6 +14,13 @@ namespace CPUWindowsFormsFramework
             {
                 lst.DataBindings.Add("SelectedValue", targetdt, lst.ValueMember, false, DataSourceUpdateMode.OnPropertyChanged);
             }
+        }
+
+        public static void BindDataToSingleList(ComboBox lstUserStaff, DataTable dtUser)
+        {
+            lstUserStaff.DataSource = dtUser;
+            lstUserStaff.DisplayMember = "UserName";
+            lstUserStaff.ValueMember = "UserStaffId";
         }
 
         public static void SetControlBinding(Control ctrl, BindingSource bindsource)
@@ -29,6 +38,9 @@ namespace CPUWindowsFormsFramework
                     break;
                 case "dtp":
                     propertyname = "Value";
+                    break;
+                case "chk":
+                    propertyname = "Checked";
                     break;
             }
 
@@ -115,12 +127,13 @@ namespace CPUWindowsFormsFramework
             foreach (Form frm in Application.OpenForms)
             {
                 int frmpkvalue = 0;
+                string newfrmtext = "";
                 if (frm.Tag != null && frm.Tag is int)
                 {
                     frmpkvalue = (int)frm.Tag;
                 }
 
-                if (frm.GetType() == formtype && frmpkvalue == pkvalue)
+                if (frm.GetType() == formtype && frm.Text != newfrmtext && frmpkvalue == pkvalue)
                 {
                     frm.Activate();
                     exists = true;
